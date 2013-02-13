@@ -141,7 +141,10 @@ def parse_args_to_dict(values_specs):
             current_arg = _options[_item]
             _item = _temp
         elif _item.startswith('type='):
-            if current_arg is not None:
+            if current_arg is None:
+                raise exceptions.CommandError(
+                    "invalid values_specs %s" % ' '.join(values_specs))
+            if 'type' not in current_arg:
                 _type_str = _item.split('=', 2)[1]
                 current_arg.update({'type': eval(_type_str)})
                 if _type_str == 'bool':
@@ -149,9 +152,6 @@ def parse_args_to_dict(values_specs):
                 elif _type_str == 'dict':
                     current_arg.update({'type': utils.str2dict})
                 continue
-            else:
-                raise exceptions.CommandError(
-                    "invalid values_specs %s" % ' '.join(values_specs))
         elif _item == 'list=true':
             _list_flag = True
             continue
@@ -212,6 +212,12 @@ def _merge_args(qCmd, parsed_args, _extra_values, value_specs):
                             _extra_values.pop(key)
 
 
+def update_dict(obj, dict, attributes):
+    for attribute in attributes:
+        if hasattr(obj, attribute) and getattr(obj, attribute):
+            dict[attribute] = getattr(obj, attribute)
+
+
 class QuantumCommand(command.OpenStackCommand):
     api = 'network'
     log = logging.getLogger(__name__ + '.QuantumCommand')
@@ -248,6 +254,12 @@ class QuantumCommand(command.OpenStackCommand):
                 elif v is None:
                     data[self.resource][k] = ''
 
+    def add_known_arguments(self, parser):
+        pass
+
+    def args2body(self, parsed_args):
+        return {}
+
 
 class CreateCommand(QuantumCommand, show.ShowOne):
     """Create a resource for a given tenant
@@ -268,12 +280,6 @@ class CreateCommand(QuantumCommand, show.ShowOne):
             help=argparse.SUPPRESS)
         self.add_known_arguments(parser)
         return parser
-
-    def add_known_arguments(self, parser):
-        pass
-
-    def args2body(self, parsed_args):
-        return {}
 
     def get_data(self, parsed_args):
         self.log.debug('get_data(%s)' % parsed_args)
@@ -312,6 +318,7 @@ class UpdateCommand(QuantumCommand):
             help='ID or name of %s to update' % self.resource)
         add_extra_argument(parser, 'value_specs',
                            'new values for the %s' % self.resource)
+        self.add_known_arguments(parser)
         return parser
 
     def run(self, parsed_args):
@@ -319,16 +326,19 @@ class UpdateCommand(QuantumCommand):
         quantum_client = self.get_client()
         quantum_client.format = parsed_args.request_format
         value_specs = parsed_args.value_specs
-        if not value_specs:
+        dict_args = self.args2body(parsed_args).get(self.resource, {})
+        dict_specs = parse_args_to_dict(value_specs)
+        body = {self.resource: dict(dict_args.items() +
+                                    dict_specs.items())}
+        if not body[self.resource]:
             raise exceptions.CommandError(
                 "Must specify new values to update %s" % self.resource)
-        data = {self.resource: parse_args_to_dict(value_specs)}
         _id = find_resourceid_by_name_or_id(quantum_client,
                                             self.resource,
                                             parsed_args.id)
         obj_updator = getattr(quantum_client,
                               "update_%s" % self.resource)
-        obj_updator(_id, data)
+        obj_updator(_id, body)
         print >>self.app.stdout, (
             _('Updated %(resource)s: %(id)s') %
             {'id': parsed_args.id, 'resource': self.resource})

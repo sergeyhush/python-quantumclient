@@ -33,7 +33,6 @@ from quantumclient.common import exceptions as exc
 from quantumclient.common import utils
 
 
-gettext.install('quantum', unicode=1)
 VERSION = '2.0'
 QUANTUM_API_VERSION = '2.0'
 
@@ -145,6 +144,53 @@ COMMAND_V2 = {
         'quantumclient.quantum.v2_0.securitygroup.CreateSecurityGroupRule'),
     'security-group-rule-delete': utils.import_class(
         'quantumclient.quantum.v2_0.securitygroup.DeleteSecurityGroupRule'),
+    'lb-vip-list': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.vip.ListVip'),
+    'lb-vip-show': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.vip.ShowVip'),
+    'lb-vip-create': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.vip.CreateVip'),
+    'lb-vip-update': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.vip.UpdateVip'),
+    'lb-vip-delete': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.vip.DeleteVip'),
+    'lb-pool-list': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.pool.ListPool'),
+    'lb-pool-show': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.pool.ShowPool'),
+    'lb-pool-create': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.pool.CreatePool'),
+    'lb-pool-update': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.pool.UpdatePool'),
+    'lb-pool-delete': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.pool.DeletePool'),
+    'lb-pool-stats': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.pool.RetrievePoolStats'),
+    'lb-member-list': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.member.ListMember'),
+    'lb-member-show': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.member.ShowMember'),
+    'lb-member-create': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.member.CreateMember'),
+    'lb-member-update': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.member.UpdateMember'),
+    'lb-member-delete': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.member.DeleteMember'),
+    'lb-healthmonitor-list': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.healthmonitor.ListHealthMonitor'),
+    'lb-healthmonitor-show': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.healthmonitor.ShowHealthMonitor'),
+    'lb-healthmonitor-create': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.healthmonitor.CreateHealthMonitor'),
+    'lb-healthmonitor-update': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.healthmonitor.UpdateHealthMonitor'),
+    'lb-healthmonitor-delete': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.healthmonitor.DeleteHealthMonitor'),
+    'lb-healthmonitor-associate': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.healthmonitor.AssociateHealthMonitor'),
+    'lb-healthmonitor-disassociate': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.healthmonitor'
+        '.DisassociateHealthMonitor'),
 }
 
 COMMANDS = {'2.0': COMMAND_V2}
@@ -186,7 +232,8 @@ class QuantumShell(App):
             description=__doc__.strip(),
             version=VERSION,
             command_manager=CommandManager('quantum.cli'), )
-        for k, v in COMMANDS[apiversion].items():
+        self.commands = COMMANDS
+        for k, v in self.commands[apiversion].items():
             self.command_manager.add_command(k, v)
 
         # This is instantiated in initialize_app() only when using
@@ -337,7 +384,7 @@ class QuantumShell(App):
                 if arg == 'bash-completion':
                     self._bash_completion()
                     return 0
-                if arg in COMMANDS[self.api_version]:
+                if arg in self.commands[self.api_version]:
                     if command_pos == -1:
                         command_pos = index
                 elif arg in ('-h', '--help'):
@@ -517,6 +564,7 @@ class QuantumShell(App):
 
 
 def main(argv=sys.argv[1:]):
+    gettext.install('quantumclient', unicode=1)
     try:
         return QuantumShell(QUANTUM_API_VERSION).run(argv)
     except exc.QuantumClientException:
