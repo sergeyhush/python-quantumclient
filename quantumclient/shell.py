@@ -158,8 +158,8 @@ COMMAND_V2 = {
     'network-profile-create': utils.import_class('quantumclient.quantum.v2_0.network_profile.CreateNetworkProfile'),
     'network-profile-delete': utils.import_class('quantumclient.quantum.v2_0.network_profile.DeleteNetworkProfile'),
     'network-profile-update': utils.import_class('quantumclient.quantum.v2_0.network_profile.UpdateNetworkProfile'),
-    'policy-profile-list': utils.import_class('quantumclient.quantum.v2_0.network_profile.ListPolicyProfile'),
-    'policy-profile-show': utils.import_class('quantumclient.quantum.v2_0.network_profile.ShowPolicyProfile'),
+    'policy-profile-list': utils.import_class('quantumclient.quantum.v2_0.policy_profile.ListPolicyProfile'),
+    'policy-profile-show': utils.import_class('quantumclient.quantum.v2_0.policy_profile.ShowPolicyProfile'),
     }
 
 COMMANDS = {'2.0': COMMAND_V2}
