@@ -23,7 +23,7 @@ RESOURCE = 'network-profile'
 
 #TODO Finish parameters
 class ListNetworkProfile(ListCommand):
-    """List profiles that belong to a given tenant."""
+    """List network profiles that belong to a given tenant."""
 
     resource = RESOURCE
     log = logging.getLogger(__name__ + '.ListNetworkProfile')
@@ -33,7 +33,7 @@ class ListNetworkProfile(ListCommand):
 
 
 class ShowNetworkProfile(ShowCommand):
-    """Show information of a given profile."""
+    """Show information of a given network profile."""
 
     resource = RESOURCE
     log = logging.getLogger(__name__ + '.ShowNetworkProfile')
@@ -42,7 +42,7 @@ class ShowNetworkProfile(ShowCommand):
 
 #TODO Finish parameters
 class CreateNetworkProfile(CreateCommand):
-    """Creates a profile."""
+    """Creates a network profile."""
 
     resource = RESOURCE
     log = logging.getLogger(__name__ + '.CreateNetworkProfile')
@@ -89,7 +89,7 @@ class CreateNetworkProfile(CreateCommand):
 
 
 class DeleteNetworkProfile(DeleteCommand):
-    """Delete a  given profile"""
+    """Delete a given network profile."""
 
     log = logging.getLogger(__name__ + '.DeleteNetworkProfile')
     resource = RESOURCE

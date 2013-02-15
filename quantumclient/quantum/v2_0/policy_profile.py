@@ -23,7 +23,7 @@ RESOURCE = 'policy-profile'
 
 #TODO Add command line help
 class ListPolicyProfile(ListCommand):
-    """List Policy profiles that belong to a given tenant."""
+    """List policy profiles that belong to a given tenant."""
 
     resource = RESOURCE
     log = logging.getLogger(__name__ + '.ListProfile')
@@ -35,7 +35,7 @@ class ListPolicyProfile(ListCommand):
 
 #TODO Add command line help
 class ShowPolicyProfile(ShowCommand):
-    """Show information of a given Policy profile."""
+    """Show information of a given policy profile."""
 
     resource = RESOURCE
     log = logging.getLogger(__name__ + '.ShowProfile')
