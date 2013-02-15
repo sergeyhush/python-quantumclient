@@ -48,25 +48,34 @@ class CreateNetworkProfile(CreateCommand):
     log = logging.getLogger(__name__ + '.CreateNetworkProfile')
 
     def add_known_arguments(self, parser):
-        parser.add_argument(
-            'name',
-            help='Name for N1KV Profile')
-        parser.add_argument(
-            'profile_type',
-            choices=['network', 'policy'],
-            help='Type of the Profile')
-        #parser.add_argument(
-        #    '--profile_id',
-        #    help='ID for N1KV Profile')
-        parser.add_argument(
-            '--segment_type',
-            help='Type of the segment - VLAN/VXLAN')
-        parser.add_argument(
-            '--segment_range',
-            help='Range for the Segment')
-        parser.add_argument(
-            '--multicast_ip_range',
-            help='Multicast IPv4 Range')
+        parser.add_argument('name', help='Name for Network Profile')
+
+        sg_type_vlan = parser.add_argument_group('vlan', help='VLAN')
+        sg_type_vlan.add_argument('--segment_range', help='Range for the Segment')
+
+        sg_type_vxlan = parser.add_argument_group('vxlan', help='VxLAN')
+        sg_type_vxlan.add_argument('--multicast_ip_index', help='Multicast IPv4 Range')
+        sg_type_vxlan.add_argument('--multicast_ip_range', help='Multicast IPv4 Range')
+
+    #     # parser.add_argument(
+    #     #     'profile_type',
+    #     #     choices=['network', 'policy'],
+    #     #     help='Type of the Profile')
+    #     #parser.add_argument(
+    #     #    '--profile_id',
+    #     #    help='ID for N1KV Profile')
+    #     parser.add_argument(
+    #         '--segment_type',
+    #         help='Type of the segment - VLAN/VXLAN')
+    #     parser.add_argument(
+    #         '--segment_range',
+    #         help='Range for the Segment')
+    #     parser.add_argument(
+    #         '--multicast_ip_index',
+    #         help='Multicast IPv4 Range')
+    #     parser.add_argument(
+    #         '--multicast_ip_range',
+    #         help='Multicast IPv4 Range')
 
     def args2body(self, parsed_args):
         body = {'profile': {
