@@ -54,7 +54,7 @@ class CreateNetworkProfile(CreateCommand):
         sg_type_vlan.add_argument('--segment_range', help='Range for the Segment')
 
         sg_type_vxlan = parser.add_argument_group('vxlan', help='VxLAN')
-        sg_type_vxlan.add_argument('--multicast_ip_index', help='Multicast IPv4 Range')
+        sg_type_vxlan.add_argument('--multicast_ip_index', help='Multicast IPv4 Index')
         sg_type_vxlan.add_argument('--multicast_ip_range', help='Multicast IPv4 Range')
 
     #     # parser.add_argument(
