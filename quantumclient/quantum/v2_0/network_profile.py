@@ -40,7 +40,6 @@ class ShowNetworkProfile(ShowCommand):
     allow_names = False
 
 
-#TODO Finish parameters
 class CreateNetworkProfile(CreateCommand):
     """Creates a network profile."""
 
@@ -50,50 +49,26 @@ class CreateNetworkProfile(CreateCommand):
     def add_known_arguments(self, parser):
         parser.add_argument('name', help='Name for Network Profile')
 
-        sg_type_vlan = parser.add_argument_group('vlan', help='VLAN')
-        sg_type_vlan.add_argument('--segment_range', help='Range for the Segment')
+        parser.add_argument('--vlan', help='VLAN')
+        parser.add_argument('--segment_range', help='Range for the Segment')
 
-        sg_type_vxlan = parser.add_argument_group('vxlan', help='VxLAN')
-        sg_type_vxlan.add_argument('--multicast_ip_index', help='Multicast IPv4 Index')
-        sg_type_vxlan.add_argument('--multicast_ip_range', help='Multicast IPv4 Range')
+        parser.add_argument('-vxlan', help='VxLAN')
+        # parser.add_argument('--multicast_ip_index', help='Multicast IPv4 Index')
+        parser.add_argument('--multicast_ip_range', help='Multicast IPv4 Range')
 
-    #     # parser.add_argument(
-    #     #     'profile_type',
-    #     #     choices=['network', 'policy'],
-    #     #     help='Type of the Profile')
-    #     #parser.add_argument(
-    #     #    '--profile_id',
-    #     #    help='ID for N1KV Profile')
-    #     parser.add_argument(
-    #         '--segment_type',
-    #         help='Type of the segment - VLAN/VXLAN')
-    #     parser.add_argument(
-    #         '--segment_range',
-    #         help='Range for the Segment')
-    #     parser.add_argument(
-    #         '--multicast_ip_index',
-    #         help='Multicast IPv4 Range')
-    #     parser.add_argument(
-    #         '--multicast_ip_range',
-    #         help='Multicast IPv4 Range')
 
     def args2body(self, parsed_args):
-        body = {'profile': {
-            'name': parsed_args.name}}
-
-        #if parsed_args.profile_id:
-        #    body['profile'].update({'profile_id': parsed_args.profile_id})
-        if parsed_args.profile_type:
-            body['profile'].update({'profile_type':
-                                        parsed_args.profile_type.lower()})
-        if parsed_args.segment_type:
-            body['profile'].update({'segment_type': parsed_args.segment_type})
+        body = {'profile': {'name': parsed_args.name}}
+        if parsed_args.vlan:
+            body['profile'].update({'segment_type': 'vlan'})
+        if parsed_args.vxlan:
+            body['profile'].update({'segment_type': 'vxlan'})
         if parsed_args.segment_range:
-            body['profile'].update({'segment_range':
-                                        parsed_args.segment_range})
+            body['profile'].update({'segment_range': parsed_args.segment_range})
+        # if parsed_args.multicast_ip_index:
+        #     body['profile'].update({'multicast_ip_index': parsed_args.multicast_ip_index})
         if parsed_args.multicast_ip_range:
-            body['profile'].update({'multicast_ip_range':
-                                        parsed_args.multicast_ip_range})
+            body['profile'].update({'multicast_ip_range': parsed_args.multicast_ip_range})
         return body
 
 
