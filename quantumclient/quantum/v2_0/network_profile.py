@@ -47,15 +47,15 @@ class CreateNetworkProfile(CreateCommand):
     log = logging.getLogger(__name__ + '.CreateNetworkProfile')
 
     def add_known_arguments(self, parser):
+        #TODO Change to mutually exclusive groups
         parser.add_argument('name', help='Name for Network Profile')
 
-        parser.add_argument('--vlan', help='VLAN')
+        parser.add_argument('--vlan', dest='vlan', action='store_true', help='VLAN')
         parser.add_argument('--segment_range', help='Range for the Segment')
 
-        parser.add_argument('-vxlan', help='VxLAN')
+        parser.add_argument('--vxlan', dest='vxlan', action='store_true', help='VxLAN')
         # parser.add_argument('--multicast_ip_index', help='Multicast IPv4 Index')
         parser.add_argument('--multicast_ip_range', help='Multicast IPv4 Range')
-
 
     def args2body(self, parsed_args):
         body = {'profile': {'name': parsed_args.name}}
