@@ -18,7 +18,7 @@
 import logging
 from quantumclient.quantum.v2_0 import ListCommand, ShowCommand
 
-RESOURCE = 'policy-profile'
+RESOURCE = 'policy_profile'
 
 
 #TODO Add command line help

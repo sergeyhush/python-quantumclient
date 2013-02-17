@@ -18,7 +18,7 @@
 import logging
 from quantumclient.quantum.v2_0 import ListCommand, ShowCommand, CreateCommand, DeleteCommand, UpdateCommand
 
-RESOURCE = 'network-profile'
+RESOURCE = 'network_profile'
 
 
 #TODO Finish parameters
