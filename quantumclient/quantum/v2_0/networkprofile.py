@@ -28,7 +28,7 @@ class ListNetworkProfile(ListCommand):
     resource = RESOURCE
     log = logging.getLogger(__name__ + '.ListNetworkProfile')
     _formatters = {}
-    list_columns = ['id', 'name', 'segment_type', 'segment_range', 'multicast_ip_range']
+    list_columns = ['id', 'name', 'segment_type', 'segment_range', 'multicast_ip_index', 'multicast_ip_range']
 
 
 class ShowNetworkProfile(ShowCommand):
