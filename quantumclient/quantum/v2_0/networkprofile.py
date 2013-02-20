@@ -84,3 +84,9 @@ class UpdateNetworkProfile(UpdateCommand):
 
     resource = RESOURCE
     log = logging.getLogger(__name__ + '.UpdateNetworkProfile')
+
+    def get_parser(self, prog_name):
+        parser = super(UpdateNetworkProfile, self).get_parser(prog_name)
+        parser.add_argument("--add-tenant", help="Add tenant to the network profile")
+        parser.add_argument("--remove-tenant", help="Remove tenant from the network profile")
+        return parser
