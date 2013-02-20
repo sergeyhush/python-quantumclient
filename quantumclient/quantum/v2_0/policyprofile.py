@@ -28,9 +28,7 @@ class ListPolicyProfile(ListCommand):
     resource = RESOURCE
     log = logging.getLogger(__name__ + '.ListProfile')
     _formatters = {}
-    #TODO Fill in proper columns
-    list_columns = ['profile_id', 'name', 'profile_type',
-                    'segment_type', 'segment_range', 'multicast_ip_range']
+    list_columns = ['id', 'name']
 
 
 #TODO Add command line help
