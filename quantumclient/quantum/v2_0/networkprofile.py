@@ -57,17 +57,17 @@ class CreateNetworkProfile(CreateCommand):
         parser.add_argument('--multicast_ip_range', help='Multicast IPv4 Range')
 
     def args2body(self, parsed_args):
-        body = {'profile': {'name': parsed_args.name}}
+        body = {'network_profile': {'name': parsed_args.name}}
         if parsed_args.vlan:
-            body['profile'].update({'segment_type': 'vlan'})
+            body['network_profile'].update({'segment_type': 'vlan'})
         if parsed_args.vxlan:
-            body['profile'].update({'segment_type': 'vxlan'})
+            body['network_profile'].update({'segment_type': 'vxlan'})
         if parsed_args.segment_range:
-            body['profile'].update({'segment_range': parsed_args.segment_range})
+            body['network_profile'].update({'segment_range': parsed_args.segment_range})
         # if parsed_args.multicast_ip_index:
         #     body['profile'].update({'multicast_ip_index': parsed_args.multicast_ip_index})
         if parsed_args.multicast_ip_range:
-            body['profile'].update({'multicast_ip_range': parsed_args.multicast_ip_range})
+            body['network_profile'].update({'multicast_ip_range': parsed_args.multicast_ip_range})
         return body
 
 
