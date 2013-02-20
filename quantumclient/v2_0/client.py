@@ -171,8 +171,8 @@ class Client(object):
     profile_path = "/profiles/%s"
     network_profiles_path = "/network_profiles"
     network_profile_path = "/network_profiles/%s"
-    policy_profiles_path = "/policy-profiles"
-    policy_profile_path = "/policy-profiles/%s"
+    policy_profiles_path = "/policy_profiles"
+    policy_profile_path = "/policy_profiles/%s"
 
 
 
