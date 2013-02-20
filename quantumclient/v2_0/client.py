@@ -169,8 +169,8 @@ class Client(object):
     security_group_rule_path = "/security-group-rules/%s"
     profiles_path = "/profiles"
     profile_path = "/profiles/%s"
-    network_profiles_path = "/network-profiles"
-    network_profile_path = "/network-profiles/%s"
+    network_profiles_path = "/network_profiles"
+    network_profile_path = "/network_profiles/%s"
     policy_profiles_path = "/policy-profiles"
     policy_profile_path = "/policy-profiles/%s"
 
