@@ -48,13 +48,13 @@ class CreateNetworkProfile(CreateCommand):
     def add_known_arguments(self, parser):
         #TODO Change to mutually exclusive groups
         parser.add_argument('name', help='Name for Network Profile')
-
         parser.add_argument('--vlan', dest='vlan', action='store_true', help='VLAN')
         parser.add_argument('--segment_range', help='Range for the Segment')
-
         parser.add_argument('--vxlan', dest='vxlan', action='store_true', help='VxLAN')
-        # parser.add_argument('--multicast_ip_index', help='Multicast IPv4 Index')
         parser.add_argument('--multicast_ip_range', help='Multicast IPv4 Range')
+        parser.add_argument("--add-tenant", help="Add tenant to the network profile")
+        parser.add_argument("--remove-tenant", help="Remove tenant from the network profile")
+
 
     def args2body(self, parsed_args):
         body = {'network_profile': {'name': parsed_args.name}}
@@ -64,10 +64,12 @@ class CreateNetworkProfile(CreateCommand):
             body['network_profile'].update({'segment_type': 'vxlan'})
         if parsed_args.segment_range:
             body['network_profile'].update({'segment_range': parsed_args.segment_range})
-        # if parsed_args.multicast_ip_index:
-        #     body['profile'].update({'multicast_ip_index': parsed_args.multicast_ip_index})
         if parsed_args.multicast_ip_range:
             body['network_profile'].update({'multicast_ip_range': parsed_args.multicast_ip_range})
+        if parsed_args.add_tenant:
+            body['network_profile'].update({'add_tenant': parsed_args.add_tenant})
+        if parsed_args.remove_tenant:
+            body['network_profile'].update({'remove_tenant': parsed_args.remove_tenant})
         return body
 
 
@@ -84,9 +86,3 @@ class UpdateNetworkProfile(UpdateCommand):
 
     resource = RESOURCE
     log = logging.getLogger(__name__ + '.UpdateNetworkProfile')
-
-    def get_parser(self, prog_name):
-        parser = super(UpdateNetworkProfile, self).get_parser(prog_name)
-        parser.add_argument("--add-tenant", help="Add tenant to the network profile")
-        parser.add_argument("--remove-tenant", help="Remove tenant from the network profile")
-        return parser
