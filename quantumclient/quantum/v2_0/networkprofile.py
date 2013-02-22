@@ -52,27 +52,12 @@ class CreateNetworkProfile(CreateCommand):
         #TODO Change to mutually exclusive groups
         parser.add_argument('name', help='Name for Network Profile')
         parser.add_argument('segment_type', choices=SEGMENT_TYPE_CHOICES, help='Segment type')
-        parser.add_argument('--vlan', dest='vlan', action='store_true', help='VLAN')
         parser.add_argument('--segment_range', help='Range for the Segment')
-        parser.add_argument('--vxlan', dest='vxlan', action='store_true', help='VxLAN')
         parser.add_argument('--multicast_ip_range', help='Multicast IPv4 Range')
         parser.add_argument("--add-tenant", help="Add tenant to the network profile")
 
-        # parser.add_argument("--remove-tenant", help="Remove tenant from the network profile")
-
-
     def args2body(self, parsed_args):
         body = {'network_profile': {'name': parsed_args.name}}
-
-        # if parsed_args.vlan and parsed_args.vxlan:
-        #     raise exceptions.CommandError("--vlan option and "
-        #                                   "--vxlan option can "
-        #                                   "not be used same time")
-
-        # if parsed_args.vlan:
-        #     body['network_profile'].update({'segment_type': 'vlan'})
-        # if parsed_args.vxlan:
-        #     body['network_profile'].update({'segment_type': 'vxlan'})
         if parsed_args.segment_type:
             body['network_profile'].update({'segment_type': parsed_args.segment_type})
         if parsed_args.segment_range:
@@ -81,8 +66,6 @@ class CreateNetworkProfile(CreateCommand):
             body['network_profile'].update({'multicast_ip_range': parsed_args.multicast_ip_range})
         if parsed_args.add_tenant:
             body['network_profile'].update({'add_tenant': parsed_args.add_tenant})
-        # if parsed_args.remove_tenant:
-        #     body['network_profile'].update({'remove_tenant': parsed_args.remove_tenant})
         return body
 
 
@@ -103,7 +86,7 @@ class UpdateNetworkProfile(UpdateCommand):
 class UpdateNetworkProfileV2(QuantumCommand):
 
     api = 'network'
-    log = logging.getLogger(__name__ + '.UpdateNetworkProfile')
+    log = logging.getLogger(__name__ + '.UpdateNetworkProfileV2')
     resource = RESOURCE
 
     def get_parser(self, prog_name):
@@ -116,7 +99,6 @@ class UpdateNetworkProfileV2(QuantumCommand):
         quantum_client = self.get_client()
         quantum_client.format = parsed_args.request_format
         data = {self.resource: parse_args_to_dict(parsed_args)}
-        update_dict = {}
         if parsed_args.remove_tenant:
             data[self.resource]['remove_tenant'] = parsed_args.remove_tenant
         quantum_client.update_network_profile(parsed_args.id, {self.resource: data})
