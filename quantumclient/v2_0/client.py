@@ -535,7 +535,7 @@ class Client(object):
         :param _params:
         :return:
         """
-        return self.get(self.network_profile_path % profile, params=params)
+        return self.get(self.network_profile_path % (profile), params=params)
 
     @APIParamsCall
     def create_network_profile(self, body=None):
@@ -554,7 +554,7 @@ class Client(object):
         :param body:
         :return:
         """
-        return self.put(self.network_profiles_path % profile, body=body)
+        return self.put(self.network_profile_path % (profile), body=body)
 
     @APIParamsCall
     def delete_network_profile(self, profile):
@@ -582,7 +582,7 @@ class Client(object):
         :param _params:
         :return:
         """
-        return self.get(self.policy_profile_path % profile, params=params)
+        return self.get(self.policy_profile_path % (profile), params=params)
 
     def __init__(self, **kwargs):
         """ Initialize a new client for the Quantum v2.0 API. """
