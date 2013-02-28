@@ -584,6 +584,17 @@ class Client(object):
         """
         return self.get(self.policy_profile_path % (profile), params=params)
 
+    @APIParamsCall
+    def update_policy_profile(self, profile, body=None):
+        """
+        Update a policy profile
+        :param profile:
+        :param body:
+        :return:
+        """
+        return self.put(self.policy_profile_path % (profile), body=body)
+
+
     def __init__(self, **kwargs):
         """ Initialize a new client for the Quantum v2.0 API. """
         super(Client, self).__init__()

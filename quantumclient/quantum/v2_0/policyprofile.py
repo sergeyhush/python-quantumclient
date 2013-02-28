@@ -16,7 +16,7 @@
 #@author Sergey Sudakovich, Cisco Systems
 
 import logging
-from quantumclient.quantum.v2_0 import ListCommand, ShowCommand
+from quantumclient.quantum.v2_0 import ListCommand, ShowCommand, UpdateCommand
 
 RESOURCE = 'policy_profile'
 
@@ -38,3 +38,9 @@ class ShowPolicyProfile(ShowCommand):
     resource = RESOURCE
     log = logging.getLogger(__name__ + '.ShowProfile')
     allow_names = False
+
+class UpdatePolicyProfile(UpdateCommand):
+    """Update policy profile's information."""
+
+    resource = RESOURCE
+    log = logging.getLogger(__name__ + '.UpdatePolicyProfile')
